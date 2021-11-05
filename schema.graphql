@@ -1,0 +1,160 @@
+type DailyBond @entity {
+  id: ID!
+  timestamp: BigInt!
+  token: Token!
+  amount: BigDecimal!
+  value: BigDecimal!
+}
+
+type PIDie @entity {
+  id: ID!
+  bondDeposits: [Deposit!]! @derivedFrom(field: "PIDie")
+  bondRedemptions: [Redemption!]! @derivedFrom(field: "PIDie")
+  stakeTransactions: [Stake!]! @derivedFrom(field: "PIDie")
+  unstakeTransactions: [Unstake!]! @derivedFrom(field: "PIDie")
+  historicBalance: [PIDieBalance!]! @derivedFrom(field: "PIDie")
+  lastBalance: PIDieBalance
+  active: Boolean!
+}
+
+type PIDieBalance @entity {
+  id: ID!
+  PIDie: PIDie!
+  sPIDBalance: BigDecimal!
+  PIDBalance: BigDecimal!
+  bondBalance: BigDecimal!
+  dollarBalance: BigDecimal!
+  stakes: [ContractInfo!]
+  bonds: [ContractInfo!]
+  timestamp: BigInt!
+}
+
+type Deposit @entity {
+  id: ID!
+  transaction: Transaction!
+  PIDie: PIDie!
+  amount: BigDecimal!
+  maxPremium: BigDecimal!
+  token: Token!
+  value: BigDecimal!
+  timestamp: BigInt!
+}
+
+type Redemption @entity {
+  id: ID!
+  transaction: Transaction
+  PIDie: PIDie
+  token: Token
+  timestamp: BigInt
+}
+
+type Stake @entity {
+  id: ID!
+  transaction: Transaction!
+  PIDie: PIDie!
+  amount: BigDecimal!
+  timestamp: BigInt!
+}
+
+type Unstake @entity {
+  id: ID!
+  transaction: Transaction!
+  PIDie: PIDie!
+  amount: BigDecimal!
+  timestamp: BigInt!
+}
+
+type Rebase @entity {
+  id: ID!
+  transaction: String!
+  amount: BigDecimal!
+  stakedPIDs: BigDecimal!
+  percentage: BigDecimal!
+  contract: String!
+  timestamp: BigInt!
+  value: BigDecimal!
+}
+
+type DailyStakingReward @entity {
+  id: ID!
+  timestamp: BigInt!
+  amount: BigDecimal!
+  value: BigDecimal!
+}
+
+type Transaction @entity {
+  id: ID!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  blockHash: Bytes!
+  from: Bytes!
+  to: Bytes
+  value: BigInt!
+  gasUsed: BigInt!
+  gasPrice: BigInt!
+}
+
+type Token @entity {
+  id: ID!
+}
+
+type ProtocolMetric @entity {
+  id: ID!
+  timestamp: BigInt!
+  PIDCirculatingSupply: BigDecimal!
+  sPIDCirculatingSupply: BigDecimal!
+  totalSupply: BigDecimal!
+  PIDPrice: BigDecimal!
+  marketCap: BigDecimal!
+  totalValueLocked: BigDecimal!
+  treasuryRiskFreeValue: BigDecimal!
+  treasuryMarketValue: BigDecimal!
+  nextEpochRebase: BigDecimal!
+  nextDistributedPID: BigDecimal!
+  treasuryDaiRiskFreeValue: BigDecimal!
+  treasuryFraxRiskFreeValue: BigDecimal!
+  treasuryLusdRiskFreeValue: BigDecimal!
+  treasuryDaiMarketValue: BigDecimal!
+  treasuryFraxMarketValue: BigDecimal!
+  treasuryLusdMarketValue: BigDecimal!
+  treasuryXsushiMarketValue: BigDecimal!
+  treasuryWETHMarketValue: BigDecimal!
+  currentAPY: BigDecimal!
+  runway2dot5k: BigDecimal
+  runway5k: BigDecimal
+  runway7dot5k: BigDecimal
+  runway10k: BigDecimal
+  runway20k: BigDecimal
+  runway50k: BigDecimal
+  runway70k: BigDecimal
+  runway100k: BigDecimal
+  runwayCurrent: BigDecimal
+  treasuryPIDDaiPOL: BigDecimal!
+  treasuryPIDFraxPOL: BigDecimal!
+  treasuryPIDLusdPOL: BigDecimal!
+  holders: BigInt!
+}
+
+type ContractInfo @entity {
+  id: ID!
+  name: String
+  contract: String
+  amount: BigDecimal
+}
+
+type Aux @entity {
+  id: ID!
+  value: BigInt!
+}
+
+type BondDiscount @entity {
+  id: ID!
+  timestamp: BigInt!
+  dai_discount: BigDecimal!
+  PIDdai_discount: BigDecimal!
+  frax_discount: BigDecimal!
+  PIDfrax_discount: BigDecimal!
+  eth_discount: BigDecimal!
+  lusd_discount: BigDecimal!
+  PIDlusd_discount: BigDecimal!
+}
